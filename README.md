@@ -1,0 +1,2 @@
+# aicode-plugin
+aiCode Bot
