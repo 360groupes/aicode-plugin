@@ -159,8 +159,6 @@
         userInput().val(userInput().val() + transcript + ' ');
       });
       recognition.addEventListener('end', ()=> recognition.stop());
-    } else {
-      // opcional: alert('Tu navegador no soporta la API de voz');
     }
   } catch(e){}
 })();
