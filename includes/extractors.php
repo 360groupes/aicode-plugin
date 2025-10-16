@@ -2,8 +2,8 @@
 if (!defined('ABSPATH')) exit;
 
 /**
- * Clase de utilidades para extracción de texto desde ficheros.
- * Usa librerías si están disponibles. Si no, devuelve un mensaje indicando limitación.
+ * Extractores de texto según tipo de archivo.
+ * Devuelven mensajes "no disponible" si faltan librerías, sin romper el flujo.
  */
 class AICode_Extractors {
 
@@ -20,7 +20,7 @@ class AICode_Extractors {
             return self::extract_from_pdf($file_path);
         }
 
-        // Word (docx) – PhpWord
+        // Word
         if (in_array($mime, [
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/msword'
@@ -28,7 +28,7 @@ class AICode_Extractors {
             return self::extract_from_doc($file_path);
         }
 
-        // Excel – PhpSpreadsheet
+        // Excel
         if (in_array($mime, [
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -37,7 +37,7 @@ class AICode_Extractors {
             return self::extract_from_spreadsheet($file_path);
         }
 
-        // PowerPoint – PhpPresentation
+        // PowerPoint
         if (in_array($mime, [
             'application/vnd.ms-powerpoint',
             'application/vnd.openxmlformats-officedocument.presentationml.presentation'
