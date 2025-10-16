@@ -18,16 +18,16 @@ class AICode_Admin_Page {
             'sanitize_callback' => function($v){ return is_string($v) ? trim($v) : ''; },
             'default' => '',
         ]);
+
         register_setting('aicode_settings', AICode_Plugin::OPTION_MODEL, [
             'type' => 'string',
             'sanitize_callback' => function($v){ return is_string($v) ? trim($v) : 'gpt-4.1'; },
             'default' => 'gpt-4.1',
         ]);
-        // NUEVO: Prompt editable
+
         register_setting('aicode_settings', AICode_Plugin::OPTION_PROMPT, [
             'type' => 'string',
             'sanitize_callback' => function($v){
-                // Permitimos texto largo; recortamos a ~24k chars por seguridad
                 $v = is_string($v) ? trim($v) : '';
                 return mb_substr($v, 0, 24000);
             },
@@ -38,8 +38,7 @@ class AICode_Admin_Page {
     public static function render_page() {
         if (!current_user_can('manage_options')) return;
 
-        $nonce = wp_create_nonce('aicode_admin_nonce');
-        ?>
+        $nonce = wp_create_nonce('aicode_admin_nonce'); ?>
         <div class="wrap">
             <h1>AI Code – Ajustes</h1>
             <p>Gestiona aquí la clave de OpenAI, el modelo y el prompt del sistema.</p>
@@ -55,7 +54,7 @@ class AICode_Admin_Page {
                             <input type="password" name="<?php echo esc_attr(AICode_Plugin::OPTION_API_KEY); ?>" id="aicode_openai_api_key"
                                    value="<?php echo esc_attr(get_option(AICode_Plugin::OPTION_API_KEY, '')); ?>" class="regular-text" />
                             <label><input type="checkbox" id="aicode_show_key" /> Mostrar</label>
-                            <p class="description">La clave se almacena en opciones de WordPress (BD). Se recomienda limitar el acceso a este panel.</p>
+                            <p class="description">La clave se almacena en opciones de WordPress (BD). Limita el acceso a este panel.</p>
                             <p>
                                 <button type="button" class="button" id="aicode_test_key_btn">Probar conexión</button>
                                 <span id="aicode_test_key_result" style="margin-left:8px;"></span>
@@ -68,17 +67,18 @@ class AICode_Admin_Page {
                         <td>
                             <input type="text" name="<?php echo esc_attr(AICode_Plugin::OPTION_MODEL); ?>" id="aicode_openai_model"
                                    value="<?php echo esc_attr(get_option(AICode_Plugin::OPTION_MODEL, 'gpt-4.1')); ?>" class="regular-text" />
-                            <p class="description">Ejemplo: gpt-4.1 (ajústalo según tus contratos/compatibilidades).</p>
+                            <p class="description">Ejemplo: gpt-4.1</p>
                         </td>
                     </tr>
 
                     <tr>
                         <th scope="row"><label for="aicode_system_prompt">System Prompt</label></th>
                         <td>
-                            <textarea name="<?php echo esc_attr(AICode_Plugin::OPTION_PROMPT); ?>" id="aicode_system_prompt" class="large-text code" rows="12"><?php
+                            <textarea name="<?php echo esc_attr(AICode_Plugin::OPTION_PROMPT); ?>" id="aicode_system_prompt"
+                                      class="large-text code" rows="12"><?php
                                 echo esc_textarea(get_option(AICode_Plugin::OPTION_PROMPT, ''));
                             ?></textarea>
-                            <p class="description">Déjalo vacío para usar el prompt por defecto incluido en el plugin.</p>
+                            <p class="description">Déjalo vacío para usar el prompt por defecto del plugin.</p>
                         </td>
                     </tr>
                 </table>
